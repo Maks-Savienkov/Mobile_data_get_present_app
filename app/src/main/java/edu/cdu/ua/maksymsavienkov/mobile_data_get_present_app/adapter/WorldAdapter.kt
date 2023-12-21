@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import edu.cdu.ua.maksymsavienkov.mobile_data_get_present_app.R
 import edu.cdu.ua.maksymsavienkov.mobile_data_get_present_app.model.World
 
 class WorldAdapter(
-    private val worlds: List<World>
+    private val worlds: LiveData<List<World>>,
 ) : RecyclerView.Adapter<WorldAdapter.WorldHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorldHolder {
@@ -18,14 +19,14 @@ class WorldAdapter(
         return WorldHolder(itemView)
     }
 
-    override fun getItemCount() = worlds.size
+    override fun getItemCount() = worlds.value!!.size
 
     override fun onBindViewHolder(holder: WorldHolder, position: Int) {
-        holder.name.text = worlds[position].name
-        holder.xLength.text = worlds[position].xLength.toString()
-        holder.yLength.text = worlds[position].yLength.toString()
-        holder.playerSpawnRoomId.text = worlds[position].playerSpawnRoomId.toString()
-        holder.version.text = worlds[position].version
+        holder.name.text = worlds.value?.get(position)?.name ?: ""
+        holder.xLength.text = worlds.value?.get(position)?.xLength.toString()
+        holder.yLength.text = worlds.value?.get(position)?.yLength.toString()
+        holder.playerSpawnRoomId.text = worlds.value?.get(position)?.playerSpawnRoomId.toString()
+        holder.version.text = worlds.value?.get(position)?.version ?: ""
     }
 
     class WorldHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
